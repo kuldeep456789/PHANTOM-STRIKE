@@ -122,6 +122,20 @@ Configure these repository secrets under **Settings > Secrets and variables > Ac
    - Add `RAILWAY_TOKEN` and `RAILWAY_SERVICE` to GitHub Secrets.
 5. Railway uses the included `backend/railway.json` for healthcheck probing at `/health`.
 
+### Render Deployment (Backend Web Service)
+1. In Render, select **New Web Service** and connect `https://github.com/kuldeep456789/PHANTOM-STRIKE`.
+2. Configure Settings in Render Dashboard:
+   - **Environment**: `Node`
+   - **Branch**: `main`
+   - **Build Command**: `npm install && npm run build` (or `yarn install && yarn build`)
+   - **Start Command**: `npm run start:backend` (or `npm start`)
+   - **Health Check Path**: `/health`
+3. Configure Environment Variables in Render:
+   - `NODE_ENV`: `production`
+   - `CLIENT_URL`: Your Vercel frontend URL, e.g. `https://phantom-strike.vercel.app`
+4. Alternatively, use the included `render.yaml` Blueprint specification.
+*(Note: If the Render Start Command is set to `npm run dev`, our smart root launcher automatically detects the production environment and seamlessly runs the production server).*
+
 ---
 
 ## 6. Local Quality Verification Checklist

@@ -9,6 +9,10 @@
     "frontend"
   ],
   "scripts": {
+    "start": "node scripts/start.js",
+    "start:backend": "npm run start --workspace=phantom-strike-backend",
+    "start:frontend": "npm run start --workspace=frontend",
+    "dev": "node scripts/dev.js",
     "dev:backend": "npm run dev --workspace=phantom-strike-backend",
     "dev:frontend": "npm run dev --workspace=frontend",
     "build": "npm run build --workspaces --if-present",
