@@ -1,0 +1,26 @@
+{
+  "name": "phantom-strike",
+  "version": "1.0.0",
+  "description": "Phantom Strike — Real-time multiplayer party game",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=phantom-strike-backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspaces --if-present",
+    "build:backend": "npm run build --workspace=phantom-strike-backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "type-check": "npm run type-check --workspaces --if-present",
+    "type-check:backend": "npm run type-check --workspace=phantom-strike-backend",
+    "type-check:frontend": "npm run type-check --workspace=frontend",
+    "test": "npm run test --workspaces --if-present",
+    "test:backend": "npm run test --workspace=phantom-strike-backend",
+    "test:frontend": "npm run test --workspace=frontend",
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:frontend": "npm run lint --workspace=frontend"
+  }
+}

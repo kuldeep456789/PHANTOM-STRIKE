@@ -1,0 +1,58 @@
+name: CI - Phantom Strike Quality Gate
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - 'feat/**'
+      - 'fix/**'
+  pull_request:
+    branches:
+      - main
+      - master
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, Type-Check, Test & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Monorepo Dependencies
+        run: npm ci
+
+      - name: Check Code Quality (ESLint)
+        run: npm run lint
+
+      - name: TypeScript Type Check (All Workspaces)
+        run: npm run type-check
+
+      - name: Run Backend Multiplayer Integration Tests
+        run: npm run test:backend
+
+      - name: Run Frontend Component & Asset Tests
+        run: npm run test:frontend
+
+      - name: Build Backend (TypeScript -> Dist)
+        run: npm run build:backend
+
+      - name: Build Frontend (Next.js 16 Production Build)
+        run: npm run build:frontend
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+          NODE_ENV: 'production'
+

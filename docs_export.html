@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PHANTOM STRIKE — Game Design, Technical Specification & QA Report</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 15mm 20mm 15mm;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      line-height: 1.5;
+      font-size: 10.5pt;
+      margin: 0;
+      padding: 0;
+    }
+    .cover {
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 90vh;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: #4f46e5;
+      color: white;
+      border-radius: 9999px;
+      margin-bottom: 24px;
+    }
+    h1.title {
+      font-size: 32pt;
+      font-weight: 900;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+    }
+    .subtitle {
+      font-size: 14pt;
+      color: #64748b;
+      max-width: 600px;
+      margin: 0 0 40px 0;
+    }
+    .meta-box {
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 16px 24px;
+      text-align: left;
+      font-size: 9.5pt;
+      width: 320px;
+    }
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .meta-row:last-child {
+      margin-bottom: 0;
+    }
+    .meta-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+    .meta-value {
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 16pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-top: 32px;
+      margin-bottom: 14px;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      page-break-after: avoid;
+    }
+    p {
+      margin: 0 0 10px 0;
+    }
+    ul, ol {
+      margin: 0 0 12px 0;
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 20px 0;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f1f5f9;
+      font-weight: 700;
+      color: #334155;
+    }
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    .pass-tag {
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 8pt;
+      text-align: center;
+      display: inline-block;
+    }
+
+    pre, code {
+      font-family: Consolas, Monaco, "Courier New", monospace;
+    }
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 8.5pt;
+      line-height: 1.4;
+      overflow-x: auto;
+      margin: 10px 0 16px 0;
+      page-break-inside: avoid;
+    }
+    code {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 8.5pt;
+    }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    .callout {
+      border-left: 4px solid #4f46e5;
+      background: #eef2ff;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 9.5pt;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER PAGE -->
+  <div class="cover">
+    <div class="badge">Comprehensive Engineering Documentation</div>
+    <h1 class="title">🔮 PHANTOM STRIKE</h1>
+    <div class="subtitle">Real-Time Multiplayer Secret-Action Strategy & Bluffing Browser Party Game</div>
+    
+    <div class="meta-box">
+      <div class="meta-row">
+        <span class="meta-label">Document:</span>
+        <span class="meta-value">System Spec & QA Audit</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Architecture:</span>
+        <span class="meta-value">Next.js 16 + Socket.IO</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Author:</span>
+        <span class="meta-value">Senior Full-Stack & QA Lead</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Multiplayer Tests:</span>
+        <span class="meta-value">12 / 12 Passed (100%)</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Build Status:</span>
+        <span class="meta-value">Verified (0 Errors)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS / OVERVIEW -->
+  <h2>1. Executive Summary & Concept</h2>
+  <p>
+    <strong>Phantom Strike</strong> is a real-time multiplayer browser party game tailored for 2 to 8 players joining instantly via 4-letter room codes. Players take the role of rival clandestine operatives who make simultaneous, hidden strategic choices each round.
+  </p>
+  <div class="callout">
+    <strong>Core Mechanic:</strong> Players lock in secret actions within 20 seconds. Once all inputs are collected (or timer expires), cards flip simultaneously in a synchronized cinematic reveal. The server authoritatively resolves conflicts, rewards foresight, and penalizes predictable moves.
+  </div>
+  <ul>
+    <li><strong>Zero friction:</strong> No authentication, no database, no installations required. Cross-platform support across desktop, tablet, and mobile devices.</li>
+    <li><strong>Authoritative Architecture:</strong> Clients render state and handle micro-interactions; all game rules, action arbitration, and scores are managed exclusively on the server.</li>
+  </ul>
+
+  <h2>2. Game Rules & Mechanics</h2>
+  <h3>2.1 Operative Actions</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 18%;">Action</th>
+        <th style="width: 18%;">Targeting</th>
+        <th>Mechanic & Interaction</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>⚔️ STRIKE</strong></td>
+        <td>Mandatory Opponent Target</td>
+        <td>
+          • <strong>Hit unshielded target:</strong> Attacker gains +2 pts, target loses −2 pts.<br>
+          • <strong>Hit shielded target:</strong> Blocked! Attacker penalized −1 pt, defender gains +1 pt.<br>
+          • <strong>Mutual Strike (A hits B, B hits A):</strong> Both players clash and lose −1 pt.<br>
+          • <strong>Target vanished (Phantom):</strong> Strike strikes thin air (0 pts).
+        </td>
+      </tr>
+      <tr>
+        <td><strong>🛡️ SHIELD</strong></td>
+        <td>Self (No Target)</td>
+        <td>
+          • Blocks all incoming strikes during the round.<br>
+          • <strong>Attack blocked:</strong> Shielder gains +1 pt, attacker penalized −1 pt.<br>
+          • <strong>Idle shield (no attacks received):</strong> Shielder gains safe-play bonus of +1 pt.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>👻 PHANTOM</strong></td>
+        <td>Self (No Target)</td>
+        <td>
+          • Operative vanishes into stealth; completely untouchable.<br>
+          • <strong>Vanishing Bonus:</strong> Operative earns +1 pt.<br>
+          • <strong>Tactical Recon:</strong> Private intelligence edge that secretly reveals one random opponent's action to the operative.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>2.2 Scoring & Win Conditions</h3>
+  <ul>
+    <li><strong>Score Floor:</strong> Players cannot drop below 0 points. Minimum score is clamped at 0.</li>
+    <li><strong>Point Threshold Victory:</strong> First operative to reach or exceed <strong>15 points</strong> wins immediately.</li>
+    <li><strong>Round Limit Victory:</strong> If no player reaches 15 points within <strong>10 rounds</strong>, the operative with the highest score wins.</li>
+    <li><strong>Sudden-Death Tiebreaker:</strong> If multiple players are tied for the highest score at threshold or round 10, a sudden-death round begins. Only tied operatives act while other players spectate. If tied after 3 sudden-death rounds, co-winners are declared.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <h2>3. Operative Roster & Visual Assets</h2>
+  <p>The game includes 8 unique operatives, each with distinct visual styling and neon chromatic accents:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Operative Name</th>
+        <th>Codename / Title</th>
+        <th>Chromatic Glow</th>
+        <th>Asset Path</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td><strong>Cipher</strong></td><td>The Hacker</td><td>Electric Cyan (#22d3ee)</td><td><code>/avatars/avatar-0.png</code></td></tr>
+      <tr><td>1</td><td><strong>Vex</strong></td><td>The Spy</td><td>Deep Purple (#a855f7)</td><td><code>/avatars/avatar-1.png</code></td></tr>
+      <tr><td>2</td><td><strong>Nyx</strong></td><td>The Rogue</td><td>Crimson Red (#ef4444)</td><td><code>/avatars/avatar-2.png</code></td></tr>
+      <tr><td>3</td><td><strong>Kael</strong></td><td>The Rebel</td><td>Electric Blue (#3b82f6)</td><td><code>/avatars/avatar-3.png</code></td></tr>
+      <tr><td>4</td><td><strong>Iris</strong></td><td>The Wildcard</td><td>Neon Green (#22c55e)</td><td><code>/avatars/avatar-4.png</code></td></tr>
+      <tr><td>5</td><td><strong>Dusk</strong></td><td>The Knight</td><td>Amber Gold (#eab308)</td><td><code>/avatars/avatar-5.png</code></td></tr>
+      <tr><td>6</td><td><strong>Auryn</strong></td><td>The Gambler</td><td>Hot Rose (#ec4899)</td><td><code>/avatars/avatar-6.png</code></td></tr>
+      <tr><td>7</td><td><strong>Sable</strong></td><td>The Phantom</td><td>Dark Indigo (#6366f1)</td><td><code>/avatars/avatar-7.png</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Technical Architecture</h2>
+  <pre><code>Handshake ai/
+├── shared/                         # Common TypeScript contract
+│   └── types.ts                    # ActionType, GamePhase, Player, Payloads
+├── backend/                        # Node.js + Express + Socket.IO Server (:3001)
+│   ├── src/
+│   │   ├── index.ts                # Server bootstrap & socket binding
+│   │   ├── types.ts                # Local type definitions
+│   │   ├── game/
+│   │   │   ├── GameEngine.ts       # Pure authoritative arbitration logic
+│   │   │   ├── GameState.ts        # State factories & sanitization
+│   │   │   └── constants.ts        # Point parameters, round timers, limits
+│   │   ├── rooms/
+│   │   │   ├── Room.ts             # Active room instance state
+│   │   │   └── RoomManager.ts      # 4-character code generator & cleanup
+│   │   └── socket/
+│   │       └── handlers.ts         # Room lifecycle, actions & disconnect handlers
+├── frontend/                       # Next.js 16 + Tailwind CSS (:3000)
+│   ├── app/
+│   │   ├── page.tsx                # Landing: Create / Join rooms
+│   │   ├── lobby/[roomCode]/       # Live player lobby with avatar picker
+│   │   └── game/[roomCode]/        # Action, reveal, results & victory phases
+│   ├── components/                 # GlassPanel, CountdownTimer, ActionPanel, Scoreboard
+│   ├── hooks/                      # useGameState (external store), useSocket
+│   └── public/avatars/             # 8 generated high-res PNG avatars</code></pre>
+
+  <h3>4.1 State Synchronization Lifecycle</h3>
+  <ol>
+    <li><strong>Client Connection:</strong> Connects via WebSocket to Node.js backend. Client maintains persistent socket instance.</li>
+    <li><strong>Lobby Assembly:</strong> Host creates room; players join using 4-character room code and claim unique avatars.</li>
+    <li><strong>Action Submission:</strong> During action phase, clients submit <code>submit_action</code>. The server logs the action to private memory and broadcasts a sanitized state where only <code>hasSubmitted: boolean</code> is visible to other players.</li>
+    <li><strong>Simultaneous Resolution:</strong> Once all players lock in or timer reaches 0, the server executes <code>resolveRound()</code>, applies rules, broadcasts <code>round_revealed</code>, and transitions smoothly through reveal, results, and subsequent rounds.</li>
+  </ol>
+
+  <div class="page-break"></div>
+
+  <h2>5. QA & Multiplayer Test Report</h2>
+  <p>
+    An end-to-end headless integration suite (<code>backend/src/test-multiplayer.ts</code>) was authored and executed using separate Socket.IO client instances to simulate concurrent real-world players.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 8%;">#</th>
+        <th style="width: 38%;">Test Specification</th>
+        <th style="width: 14%;">Result</th>
+        <th>Verification Details & Observed Behavior</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Player 1 creates room</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Generated 4-letter uppercase room code. Player assigned host privileges.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Player 2 joins room code</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Joined successfully; confirmed unique operative avatar assignment.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Roster synchronization</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Both clients immediately receive matching player list of 2 operatives.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Host initiates game</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Phase advanced to <code>ACTION</code>; round 1 counter initialized.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Secret action lock-in</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>P1 locked in <code>STRIKE</code>; confirmed <code>hasSubmitted: true</code> flag.</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Opponent info privacy</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Inspected network payloads: action type and target remain hidden from opponent until reveal.</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Duplicate submission prevention</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Secondary action submissions rejected; round resolved exactly once.</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Resolution & scoring consistency</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>P1 Strike vs P2 Shield: P1 blocked (-1 floored at 0), P2 blocked (+1). Identical scores sent to all clients.</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Automatic round progression</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Following reveal (3s) and results (5s), game cleanly advanced to Round 2.</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Victory & tiebreaker logic</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Verified 15-pt threshold win, round 10 limit win, sudden-death triggers, and 3-round co-win limit.</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>Play Again reset</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Room returned to <code>LOBBY</code>, rounds reset to 0, scores cleared to 0, room code preserved.</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Fault tolerance & disconnects</td>
+        <td><span class="pass-tag">PASS</span></td>
+        <td>Self-strike rejected. Mid-round player disconnect auto-converted to Phantom; room proceeded without freezing.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>6. Defects Identified & Remediation Log</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Defect Description</th>
+        <th style="width: 20%;">Component</th>
+        <th>Remediation Applied</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Route State Loss</strong><br>Navigating across pages wiped client game store.</td>
+        <td><code>frontend/hooks</code></td>
+        <td>Migrated from local <code>useState</code> to external singleton store backed by <code>useSyncExternalStore</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Multi-Strike Shield Leak</strong><br>First strike consumed shielder state, letting subsequent strikes penetrate.</td>
+        <td><code>backend/GameEngine</code></td>
+        <td>Maintained shield set across full resolution pass; tracked attacked shielders separately to award +1 block bonus.</td>
+      </tr>
+      <tr>
+        <td><strong>Premature Sudden Death</strong><br>Triggered tiebreaker even when one player had higher score over 15.</td>
+        <td><code>backend/GameEngine</code></td>
+        <td>Updated win check to compute <code>maxScore</code> so top player wins outright; sudden death only triggers on exact tie.</td>
+      </tr>
+      <tr>
+        <td><strong>Play Again Desync</strong><br>Non-host players remained stuck on game over screen after host restarted.</td>
+        <td><code>frontend/app/game</code></td>
+        <td>Added phase change reactive watcher to transition clients back to <code>/lobby/[roomCode]</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>7. Production Startup & Verification</h2>
+  <ul>
+    <li><strong>Backend Daemon:</strong> Running on <code>http://localhost:3001</code> (health check verified: HTTP 200).</li>
+    <li><strong>Frontend Daemon:</strong> Running on <code>http://localhost:3000</code> (Next.js 16 production build verified).</li>
+  </ul>
+</body>
+</html>
+

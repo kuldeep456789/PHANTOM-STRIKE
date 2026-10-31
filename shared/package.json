@@ -1,0 +1,11 @@
+{
+  "name": "@phantom-strike/shared",
+  "version": "1.0.0",
+  "description": "Shared TypeScript definitions and game models for Phantom Strike",
+  "main": "types.ts",
+  "types": "types.ts",
+  "scripts": {
+    "build": "echo @phantom-strike/shared ready"
+  },
+  "private": true
+}
