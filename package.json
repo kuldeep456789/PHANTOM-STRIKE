@@ -9,13 +9,14 @@
     "frontend"
   ],
   "scripts": {
-    "start": "node scripts/start.js",
-    "start:backend": "npm run start --workspace=phantom-strike-backend",
+    "start": "node backend/dist/index.js",
+    "start:backend": "node backend/dist/index.js",
     "start:frontend": "npm run start --workspace=frontend",
-    "dev": "node scripts/dev.js",
+    "dev": "node backend/dist/index.js",
     "dev:backend": "npm run dev --workspace=phantom-strike-backend",
     "dev:frontend": "npm run dev --workspace=frontend",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build:backend",
+    "build:all": "npm run build:backend && npm run build:frontend",
     "build:backend": "npm run build --workspace=phantom-strike-backend",
     "build:frontend": "npm run build --workspace=frontend",
     "type-check": "npm run type-check --workspaces --if-present",

@@ -3,7 +3,6 @@ services:
     name: phantom-strike-backend
     env: node
     plan: free
-    rootDir: ""
     buildCommand: "npm install && npm run build:backend"
     startCommand: "node backend/dist/index.js"
     healthCheckPath: /health
