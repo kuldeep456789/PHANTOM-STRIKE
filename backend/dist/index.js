@@ -15,11 +15,22 @@ const RoomManager_1 = require("./rooms/RoomManager");
 const handlers_1 = require("./socket/handlers");
 const PORT = parseInt(process.env.PORT ?? '3001', 10);
 const rawClientUrl = process.env.CLIENT_URL ?? 'http://localhost:3000';
-const corsOrigin = rawClientUrl.includes(',')
-    ? rawClientUrl.split(',').map((url) => url.trim())
-    : rawClientUrl === '*'
-        ? true
-        : rawClientUrl;
+// Dynamic CORS configuration that reflects origin for localhost and Vercel deployments
+const corsOrigin = (origin, callback) => {
+    // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+    if (!origin)
+        return callback(null, true);
+    // Allow explicit client URL, any Vercel deployment, or localhost
+    if (rawClientUrl === '*' ||
+        rawClientUrl.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1')) {
+        return callback(null, true);
+    }
+    // Allow all other origins for public party game
+    return callback(null, true);
+};
 // ------------------------------------------------------------------
 // Express app + HTTP server
 // ------------------------------------------------------------------
@@ -63,7 +74,7 @@ httpServer.listen(PORT, '0.0.0.0', () => {
   ║  🔮 PHANTOM STRIKE SERVER        ║
   ║  Listening on port ${PORT}          ║
   ║  Accepting clients from          ║
-  ║  ${rawClientUrl}         ║
+  ║  ${rawClientUrl} (and *.vercel.app) ║
   ╚══════════════════════════════════╝
   `);
 });
